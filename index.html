@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naina Kangan and Wool Store – Sales Dashboard</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#1d2330;--mut:#667085;--line:#e3e6eb;--bg1:#b3262e;--wool:#2f5d8a;--ok:#2b7a4b}
+@media (prefers-color-scheme:dark){:root{--bg:#12151c;--card:#1a1f29;--ink:#eceff4;--mut:#9aa4b5;--line:#2a3140;--bg1:#e0565e;--wool:#6aa0d6;--ok:#5fc08a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header,main{max-width:1100px;margin:0 auto;padding:0 20px}
+header{padding-top:32px}
+h1{font-size:1.7rem;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--mut);margin:0 0 24px;max-width:70ch}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi,.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+.kpi b{display:block;font-size:1.5rem;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--mut);font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;padding-bottom:40px}
+.c12{grid-column:span 12}.c7{grid-column:span 7}.c5{grid-column:span 5}.c6{grid-column:span 6}
+@media(max-width:800px){.c7,.c5,.c6{grid-column:span 12}}
+h2{font-size:1rem;margin:0 0 2px}
+.note{color:var(--mut);font-size:.85rem;margin:0 0 14px}
+.legend{display:flex;gap:14px;font-size:.85rem;color:var(--mut);margin-bottom:8px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
+.cols{display:flex;align-items:flex-end;gap:6px;height:230px;border-bottom:1px solid var(--line)}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative}
+.col i{display:block;width:100%}
+.col em{position:absolute;top:-16px;width:100%;text-align:center;font-size:.7rem;font-style:normal;color:var(--mut)}
+.labs{display:flex;gap:6px;margin-top:4px}.labs span{flex:1;text-align:center;font-size:.75rem;color:var(--mut)}
+.row{display:grid;grid-template-columns:150px 1fr 90px;align-items:center;gap:10px;margin:7px 0;font-size:.88rem}
+.row .t{background:var(--line);border-radius:4px;height:14px;display:flex;overflow:hidden}
+.row .t i{display:block;height:100%}
+.row .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--mut)}
+@media(max-width:520px){.row{grid-template-columns:100px 1fr 70px}}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}th{color:var(--mut);font-weight:600}
+.tag{display:inline-block;min-width:28px;text-align:center;border-radius:4px;padding:1px 6px;font-weight:600;font-size:.8rem}
+.A{background:#b3262e22;color:var(--bg1)}.B{background:#2f5d8a22;color:var(--wool)}.C{background:var(--line);color:var(--mut)}
+.pts{margin:0;padding-left:18px}.pts li{margin:6px 0}
+footer{max-width:1100px;margin:0 auto;padding:0 20px 40px;color:var(--mut);font-size:.8rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>Sales dashboard: Naina Kangan and Wool Store</h1>
+  <p class="sub">Doiwala, Dehradun. 2,378 sales transactions from 7 Feb 2024 to 31 Jan 2025, digitised from the store's handwritten registers. IIT Madras BDM capstone by Vivek Mittal.</p>
+  <div class="kpis" id="kpis"></div>
+</header>
+<main class="grid">
+  <section class="card c12">
+    <h2>Monthly revenue by category</h2>
+    <p class="note">October and July together bring in 43% of the year. September is the lowest month.</p>
+    <div class="legend"><span><i class="sw" style="background:var(--bg1)"></i>Bangles</span><span><i class="sw" style="background:var(--wool)"></i>Wool</span></div>
+    <div class="cols" id="monthly"></div><div class="labs" id="mlabs"></div>
+  </section>
+  <section class="card c7">
+    <h2>Revenue by season</h2>
+    <p class="note">Wool fills the winter gap left by bangles.</p>
+    <div id="season"></div>
+  </section>
+  <section class="card c5">
+    <h2>B2B vs B2C</h2>
+    <p class="note">Wholesale buyers bring 68% of revenue.</p>
+    <table id="cust"></table>
+    <h2 style="margin-top:18px">Payment mode</h2>
+    <div id="pay"></div>
+  </section>
+  <section class="card c6">
+    <h2>Gross profit by product type</h2>
+    <p class="note">Bangles Box alone earns 53.7% of gross profit.</p>
+    <div id="prod"></div>
+  </section>
+  <section class="card c6">
+    <h2>ABC-XYZ stock classification</h2>
+    <p class="note">A = first 80% of revenue, B = next 15%, C = last 5%. XYZ uses monthly demand variation (CV): X ≤ 0.5, Y ≤ 1.0, Z above 1.0. No product has stable (X) demand.</p>
+    <table id="abc"></table>
+  </section>
+  <section class="card c12">
+    <h2>What this means for the store</h2>
+    <ul class="pts">
+      <li>Stock bangles ahead of July and October; these two months are the largest single risk and opportunity.</li>
+      <li>Plan wool purchases for November to February and cut orders after winter.</li>
+      <li>Order Class C items only on demand; together they are about 8% of revenue.</li>
+      <li>Start recording wholesale customers and push digital payments (cash is 95% of transactions).</li>
+    </ul>
+  </section>
+</main>
+<footer>Source: store sales registers, one year only, so seasonal patterns describe this year and are not a validated forecast. Units differ across products, so compare revenue, not quantity. Gross profit = revenue minus cost of goods sold.</footer>
+<script>
+const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const lakh=n=>n>=1e5?'₹'+(n/1e5).toFixed(1)+'L':'₹'+Math.round(n/1e3)+'k';
+const $=id=>document.getElementById(id);
+const M=[["Feb",22940,60456],["Mar",33240,57798],["Apr",59295,14460],["May",56535,880],["Jun",61415,1000],["Jul",208060,1510],["Aug",86650,300],["Sep",19780,5210],["Oct",291225,28672],["Nov",17370,37708],["Dec",16630,55102],["Jan",24480,58680]];
+const S=[["Autumn/Festive (Oct)",291225,28672],["Monsoon (Jul–Sep)",314490,7020],["Spring (Mar–Apr)",92535,72258],["Summer (May–Jun)",117950,1880],["Winter (Nov–Feb)",81420,211946]];
+const P=[["Bangles Box",142650],["Bangles Set",28630],["Bangles Box (Plus size)",23200],["Wool Ball (q2)",20020],["Wool Ball (q1)",16560],["Metal Bangles",11840],["Fancy Bangles Box",10600],["Wool Ball Packet",5670],["Baby Soft Wool",3110],["Button",1792],["Knitting Needle (Pair)",1490]];
+const ABC=[["Bangles Box","50.7%","A","1.08","Z"],["Wool Ball (q2)","11.5%","A","1.02","Z"],["Wool Ball (q1)","8.8%","A","0.98","Y"],["Bangles Set","8.4%","A","1.54","Z"],["Fancy Bangles Box","6.5%","B","1.30","Z"],["Bangles Box (Plus size)","5.7%","B","1.11","Z"],["Wool Ball Packet","4.0%","C","0.96","Y"],["Metal Bangles","2.3%","C","1.70","Z"],["Baby Soft Wool","1.3%","C","0.94","Y"],["Button","0.4%","C","1.34","Z"],["Knitting Needle (Pair)","0.4%","C","0.99","Y"]];
+const K=[["₹12,19,396","Total revenue"],["2,378","Sales transactions"],["₹512.78","Average per transaction"],["₹2,65,562","Gross profit (21.8% margin)"],["73.6%","Revenue from bangles"],["24.2% / 15.1%","Gross margin: bangles / wool"]];
+$('kpis').innerHTML=K.map(k=>`<div class="kpi"><b>${k[0]}</b><span>${k[1]}</span></div>`).join('');
+const mx=Math.max(...M.map(m=>m[1]+m[2]));
+$('monthly').innerHTML=M.map(m=>{const t=m[1]+m[2];return `<div class="col" title="${m[0]}: ${inr(t)} (bangles ${inr(m[1])}, wool ${inr(m[2])})"><em>${lakh(t)}</em><i style="height:${m[2]/mx*100*.88}%;background:var(--wool)"></i><i style="height:${m[1]/mx*100*.88}%;background:var(--bg1)"></i></div>`}).join('');
+$('mlabs').innerHTML=M.map(m=>`<span>${m[0]}</span>`).join('');
+const sm=Math.max(...S.map(s=>s[1]+s[2]));
+$('season').innerHTML=S.map(s=>`<div class="row"><span>${s[0]}</span><div class="t" title="Bangles ${inr(s[1])}, Wool ${inr(s[2])}"><i style="width:${s[1]/sm*100}%;background:var(--bg1)"></i><i style="width:${s[2]/sm*100}%;background:var(--wool)"></i></div><span class="v">${inr(s[1]+s[2])}</span></div>`).join('');
+$('cust').innerHTML=`<tr><th></th><th>Transactions</th><th>Avg value</th><th>Revenue</th></tr><tr><td>B2B (wholesale)</td><td>1,308</td><td>₹633.04</td><td>₹8,28,020</td></tr><tr><td>B2C (retail)</td><td>1,070</td><td>₹365.77</td><td>₹3,91,376</td></tr>`;
+$('pay').innerHTML=[["Cash","2,252 txns (94.7%)",94.7,"₹11,73,904"],["Online","126 txns (5.3%)",5.3,"₹45,492"]].map(p=>`<div class="row" style="grid-template-columns:60px 1fr 90px"><span>${p[0]}</span><div class="t"><i style="width:${p[2]}%;background:var(--ok)"></i></div><span class="v">${p[3]}</span></div>`).join('');
+const pm=P[0][1];
+$('prod').innerHTML=P.map(p=>`<div class="row"><span>${p[0]}</span><div class="t"><i style="width:${p[1]/pm*100}%;background:${/Wool|Baby|Button|Knitting/.test(p[0])?'var(--wool)':'var(--bg1)'}"></i></div><span class="v">${inr(p[1])}</span></div>`).join('');
+$('abc').innerHTML='<tr><th>Product</th><th>Revenue share</th><th>ABC</th><th>CV</th><th>XYZ</th></tr>'+ABC.map(a=>`<tr><td>${a[0]}</td><td>${a[1]}</td><td><span class="tag ${a[2]}">${a[2]}</span></td><td>${a[3]}</td><td>${a[4]}</td></tr>`).join('');
+</script>
+</body>
+</html>

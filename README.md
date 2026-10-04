@@ -2,9 +2,9 @@
 
 A data analysis project on **Naina Kangan and Wool Store** (New Market, Doiwala, Dehradun, Uttarakhand), a small family-run shop that sells bangles wholesale and wool retail. Built as the capstone for the **IIT Madras Online BS Degree Program (Business Data Management)**.
 
-**[View the live dashboard](https://YOUR-USERNAME.github.io/bangle-wool-store-sales-analysis/)**
+**[View the live dashboard](https://23f1001475.github.io/Business-Data-Management-Capstone-Project/)**
 
-![Dashboard preview](screenshots/dashboard.png)
+![Dashboard preview](Screenshots/Dashboard.png)
 
 ---
 
@@ -88,8 +88,11 @@ No installation is needed. Download the repo and open `index.html` in any browse
 
 ## Author
 
-**Vivek Mittal**, IIT Madras Online BS Degree Program
-[LinkedIn](https://www.linkedin.com/in/YOUR-PROFILE) · [GitHub](https://github.com/YOUR-USERNAME)
+**Vivek Mittal**
+
+* [LinkedIn](https://www.linkedin.com/in/vivek-mittal-574a31250/)
+* [GitHub](https://github.com/23f1001475)
+
 
 ## Disclaimer
 
